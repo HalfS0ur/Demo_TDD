@@ -44,7 +44,7 @@ jobs:
                   import xml.etree.ElementTree as ET
                   import sys
                   try:
-                      tree = ET.parse("Antirebotes_Sincronizador/results.xml")
+                      tree = ET.parse("Half_Adder/Testbench/results.xml")
                       root = tree.getroot()
                       if "Test failed" in ET.tostring(root).decode():
                           print(f"Se encontraron errores durante la ejecución del testbench.")
