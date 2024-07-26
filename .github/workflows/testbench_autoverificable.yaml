@@ -18,40 +18,40 @@ jobs:
             - 'Half_Adder/**/*.sv'
 
 
-    half_adder:
-        needs: Deteccion_de_cambios
-        if: ${{ needs.Deteccion_de_cambios.outputs.half_adder == 'true' }}
-        runs-on: ubuntu-latest
-        defaults:
-            run:
+  half_adder:
+      needs: Deteccion_de_cambios
+      if: ${{ needs.Deteccion_de_cambios.outputs.half_adder == 'true' }}
+      runs-on: ubuntu-latest
+      defaults:
+          run:
             working-directory: ./Half_Adder/Testbench
-        steps:
-            - name: Descargando código del repositorio
-              uses: actions/checkout@v4
-            - name: Instalando iverilog
-              run: sudo apt-get install iverilog
-            - name: Configurando Python 3.10
-              uses: actions/setup-python@v5
-              with: 
-                python-version: '3.10'
-            - name: Instalando dependencias
-              run: pip install cocotb
-            - run: make
-            - name: Buscando errores
+      steps:
+          - name: Descargando código del repositorio
+            uses: actions/checkout@v4
+          - name: Instalando iverilog
+            run: sudo apt-get install iverilog
+          - name: Configurando Python 3.10
+            uses: actions/setup-python@v5
+            with: 
+              python-version: '3.10'
+          - name: Instalando dependencias
+            run: pip install cocotb
+          - run: make
+          - name: Buscando errores
             uses: jannekem/run-python-script-action@v1.7
             with:
-                script: |
-                    import xml.etree.ElementTree as ET
-                    import sys
-                    try:
-                        tree = ET.parse("Antirebotes_Sincronizador/results.xml")
-                        root = tree.getroot()
-                        if "Test failed" in ET.tostring(root).decode():
-                            print(f"Se encontraron errores durante la ejecución del testbench.")
-                            sys.exit(1)
-                        else:
-                            print(f"Ejecución del testbench exitosa.")
-                            sys.exit(0)
-                    except Exception as e:
-                        print("Ocurrió un error:", e)
-                        sys.exit(1)
+              script: |
+                  import xml.etree.ElementTree as ET
+                  import sys
+                  try:
+                      tree = ET.parse("Antirebotes_Sincronizador/results.xml")
+                      root = tree.getroot()
+                      if "Test failed" in ET.tostring(root).decode():
+                          print(f"Se encontraron errores durante la ejecución del testbench.")
+                          sys.exit(1)
+                      else:
+                          print(f"Ejecución del testbench exitosa.")
+                          sys.exit(0)
+                  except Exception as e:
+                      print("Ocurrió un error:", e)
+                      sys.exit(1)
