@@ -8,7 +8,7 @@ module half_adder (
 );
 
 always_comb begin
-    sum_o = a_i & b_i;
+    sum_o = a_i ^ b_i;
     carry_o = a_i & b_i;
 end
     
